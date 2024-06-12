@@ -1,7 +1,7 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Open Trivia
     </ion-title>
   </ion-toolbar>
 </ion-header>
@@ -9,12 +9,92 @@
 <ion-content [fullscreen]="true">
   <ion-header collapse="condense">
     <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
+      <ion-title size="large">Open Trivia</ion-title>
     </ion-toolbar>
   </ion-header>
 
   <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+    <ion-card>
+      <ion-list>
+        <form id="form" *ngIf="!isGameStarted">
+          <ion-item>
+            <ion-input id="inputPseudo"
+                       name="inputPseudo"
+                       label="Pseudo"
+                       label-placement="floating"
+                       type="text"
+                       [(ngModel)]="pseudo"/>
+          </ion-item>
+          <ion-item>
+            <ion-select id="inputDifficulty"
+                        name="inputDifficulty"
+                        label="Niveau de difficulté"
+                        label-placement="floating"
+                        [(ngModel)]="difficulty">
+              <ion-select-option value="easy">Easy</ion-select-option>
+              <ion-select-option value="medium">Medium</ion-select-option>
+              <ion-select-option value="hard">Hard</ion-select-option>
+            </ion-select>
+          </ion-item>
+          <ion-item>
+            <ion-checkbox
+              [(ngModel)]="memorize"
+              name="inputMemorize"
+              id="inputMemorize">
+              Mémoriser?
+            </ion-checkbox>
+          </ion-item>
+          <ion-button expand="block" (click)="startGame()">
+            Commencer le jeu
+          </ion-button>
+          <br/>
+          <p id="errorMsg" *ngIf="error">
+            {{error}}
+          </p>
+        </form>
+
+
+
+        <div *ngIf="isGameStarted" id="game">
+          <ion-item>
+            <ion-label>Bienvenue {{pseudo}}</ion-label>
+          </ion-item>
+            <ion-text  color="secondary">
+              <h1>De quelles couleurs sont les pommes de terre de Francis</h1>
+            </ion-text>
+            <br>
+            <ion-grid>
+              <ion-row>
+                <ion-col>
+                  <ion-button expand="block" (click)="setUserResponse('Blanc')">Blanc</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button expand="block" (click)="setUserResponse('Noir')">Noir</ion-button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-button expand="block" (click)="setUserResponse('Jaune')">Jaune</ion-button>
+                </ion-col>
+                <ion-col>
+                  <ion-button expand="block" (click)="setUserResponse('Bleu')">Bleu</ion-button>
+                </ion-col>
+              </ion-row>
+              <ion-row>
+                <ion-col>
+                  <ion-button expand="block" *ngIf="responseSubmitted">Suivant</ion-button>
+                </ion-col>
+              </ion-row>
+
+
+            </ion-grid>
+
+
+        </div>
+      </ion-list>
+    </ion-card>
+
+    <ion-toast *ngIf="responseSubmitted" [isOpen]="responseSubmitted" message="Votre réponse est {{userResponse}}"/>
+
   </div>
 </ion-content>
